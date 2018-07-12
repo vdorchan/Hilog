@@ -1,6 +1,19 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  Menu,
+  Tray
+} from 'electron'
+
+import moment from 'moment'
+import db from '../renderer/dataStore'
+import path from 'path'
+
+let tray
 
 /**
  * Set `__static` path to static files in production
@@ -15,6 +28,8 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+let isTrueClose = false
+
 function createWindow () {
   /**
    * Initial window options
@@ -22,22 +37,34 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    resizable: false
   })
 
   mainWindow.loadURL(winURL)
+
+  mainWindow.on('close', (e) => {
+    if (!isTrueClose) {
+      e.preventDefault()
+      mainWindow.hide()
+    }
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  createTray()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+  if (tray) tray.destroy()
 })
 
 app.on('activate', () => {
@@ -46,6 +73,48 @@ app.on('activate', () => {
   }
 })
 
+ipcMain.on('save-dialog', function (event) {
+  const name = db.get('name').value()
+  const options = {
+    title: '保存周报',
+    defaultPath: `${moment().format('YYYYMMDD')}_${name}.docx`,
+    filters: [
+      { name: 'Word', extensions: ['docx'] }
+    ]
+  }
+  dialog.showSaveDialog(options, function (filename) {
+    event.sender.send('saved-word', filename)
+  })
+})
+
+function createTray () {
+  const iconName = process.platform === 'win32' ? './win/ico.ico' : './mac/ico.icns'
+  const iconPath = path.join(__dirname, iconName)
+  tray = new Tray(iconPath)
+
+  const contextMenu = Menu.buildFromTemplate([{
+    label: '打开主窗口',
+    click () {
+      mainWindow.show()
+    }
+  }, {
+    label: '退出程序',
+    click () {
+      isTrueClose = true
+      mainWindow.close()
+    }
+  }])
+
+  tray.on('click', () => {
+    mainWindow.isVisible() || mainWindow.show()
+  })
+
+  tray.on('right-click', () => {
+    tray.popUpContextMenu(contextMenu)
+  })
+  tray.setToolTip('Electron Demo in the tray.')
+  // tray.setContextMenu(contextMenu)
+}
 /**
  * Auto Updater
  *
