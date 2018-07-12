@@ -13,7 +13,7 @@
   import workNav from './components/WorkNav'
 
   export default {
-    name: 'worklog',
+    name: 'Hilog',
     components: {
       workNav
     }
