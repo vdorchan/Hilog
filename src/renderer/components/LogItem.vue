@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { shell, clipboard } from 'electron'
 
 export default {
@@ -50,19 +51,11 @@ export default {
   },
   props: ['log', 'lastLog'],
   methods: {
-    removeLog (logId) {
-      this.$store.commit('removeLog', { logId })
-    },
-    finishLog (logId) {
-      this.$store.commit('finishLog', { logId })
-    },
-    editLog () {
-      this.$store.commit('editLog', { log: this.log })
-      // this.canEdit = true
-      // setTimeout(() => {
-      //   // this.$refs.inputPorgress.focus()
-      // }, 500)
-    },
+    ...mapMutations([
+      'removeLog',
+      'finishLog',
+      'editLog'
+    ]),
     openLink () {
       shell.openExternal(this.log.itemLink)
     },

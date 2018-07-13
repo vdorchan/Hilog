@@ -25,7 +25,7 @@
         </div>
       </div>
       <a href="javascript:" class="log-add" @click="addLog" :title="log.id?'添加项目':'修改项目'"></a>
-      <a href="javascript:" class="log-ban" @click="cancelEditLog" title="取消修改" v-show="log.id"></a>
+      <a href="javascript:" class="log-ban" @click="cancelUpdateLog" title="取消修改" v-show="log.id"></a>
     </div>
     <div class="log-list">
       <transition-group name="list-complete" tag="p">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import LogItem from './LogItem'
 import LogHeader from './LogHeader'
 
@@ -46,19 +47,20 @@ export default {
   name: 'log-list',
   data () {
     return {
-      logList: [],
       showSiteSelect: false,
       sites: [ '汽车网', '电脑网', '时尚网', '亲子网', '家居网' ],
       filterWord: '',
       remarks: ['已完成', '已上线'],
       showRemarkSelect: false,
-      log: {
-        itemProgress: 0,
-        itemName: '',
-        itemRemark: '',
-        itemLink: '',
-        id: ''
-      }
+      log: null
+    }
+  },
+  created () {
+    this.log = this.$store.getters.log
+  },
+  watch: {
+    '$store.getters.log' () {
+      this.log = this.$store.getters.log
     }
   },
   computed: {
@@ -66,47 +68,22 @@ export default {
       const v = this.log.itemName.replace('[', '')
       const filterSites = this.sites.filter(s => s.includes(v))
       return filterSites.length ? filterSites : this.sites
-    }
-  },
-  created () {
-    // this.log = this.$store.state.log
-    Object.assign(this.log, this.$store.state.log)
-    this.logList = this.$store.state.logList
-
-    document.addEventListener('click', () => {
-      if (this.$store.state.editingLog) {
-        this.$store.commit('editLog', {})
-      }
-    })
-  },
-  watch: {
-    '$store.state.logList' () {
-      this.logList = this.$store.state.logList
     },
-    '$store.state.log' () {
-      const { log } = this.$store.state
-      console.log(log.itemProgress)
-
-      typeof log.itemProgress === 'string' && (log.itemProgress = log.itemProgress.replace('%', ''))
-      console.log(log.itemProgress)
-      Object.assign(this.log, log)
-    }
+    ...mapState([
+      'logList'
+    ])
   },
   methods: {
+    ...mapMutations([
+      'cancelUpdateLog'
+    ]),
     addLog () {
-      const {
-        log
-      } = this
-
-      log.itemProgress += '%'
+      const { log } = this
 
       if (!log.itemName) {
         return alert('缺少项目名称！')
       }
-      this.$store.commit('addLog', { log })
-    },
-    cancelEditLog () {
-      this.$store.commit('cancelUpdateLog')
+      this.$store.commit('addLog', { log: Object.assign({}, log, { itemProgress: log.itemProgress + '%' }) })
     },
     fixProgress (el) {
       el.target.value = '%'

@@ -5,10 +5,10 @@
       <a class="btn-login" href="javascript:" @click="login"></a>
     </div>
     <template v-if="!$route.meta.isLogin">
-      <router-link class="btn-back" to="/index">< 返回</router-link>
+      <router-link class="btn-back" to="/index">&lt; 返回</router-link>
       <div class="info">
         <label for="">关于作者</label>
-        <p>vdorchan<<a href="mailto:vdorchan@gmail.com">vdorchan@gmail.com</a>></p>
+        <p>vdorchan&lt;<a href="mailto:vdorchan@gmail.com">vdorchan@gmail.com</a>&gt;</p>
       </div>
     </template>
   </div>
@@ -23,11 +23,6 @@ export default {
   },
   created () {
     this.name = this.$store.state.name
-  },
-  watch: {
-    '$store.state.name' () {
-      this.name = this.$store.state.name
-    }
   },
   methods: {
     login () {
@@ -66,9 +61,6 @@ export default {
 a {
   color: #ffffff;
   text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
 }
 input,
 select {

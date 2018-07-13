@@ -4,8 +4,6 @@ import db from '../dataStore'
 import moment from 'moment'
 moment.locale('en', {week: { dow: 1 }})
 
-console.log(moment('07/08/2018').week())
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,13 +12,21 @@ export default new Vuex.Store({
     count: 0,
     STOREFILE: null,
     editingLog: null,
-    log: null,
+    log: {
+      itemProgress: 0,
+      itemName: '',
+      itemRemark: '',
+      itemLink: '',
+      id: ''
+    },
     name: '',
     timeRange: ''
   },
+  getters: {
+    log: ({ log }) => Object.assign({}, log, {itemProgress: (log.itemProgress + '').replace('%', '')})
+  },
   mutations: {
     updateName (state, { name } = {}) {
-      console.log(name)
       if (name) {
         db.update('name', n => name).write()
       }
@@ -50,7 +56,7 @@ export default new Vuex.Store({
       this.commit('updateLogList')
     },
 
-    removeLog (state, { logId }) {
+    removeLog (state, logId) {
       db.get('logList')
         .remove({ id: logId })
         .write()
@@ -79,7 +85,7 @@ export default new Vuex.Store({
       }
     },
 
-    finishLog (state, { logId }) {
+    finishLog (state, logId) {
       db.get('logList')
         .find({ id: logId })
         .assign({ hasFinish: true, itemProgress: '100%' })
@@ -108,7 +114,7 @@ export default new Vuex.Store({
       state.STOREFILE = STOREFILE
     },
 
-    editLog (state, { log }) {
+    editLog (state, log) {
       state.log = log
     }
   }
