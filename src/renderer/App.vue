@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <window-bar></window-bar> -->
     <transition name="fade">
       <router-view></router-view>
     </transition>
@@ -8,13 +7,8 @@
 </template>
 
 <script>
-import WindowBar from './components/WindowBar'
-
 export default {
-  name: 'Hilog',
-  components: {
-    WindowBar
-  }
+  name: 'Hilog'
 }
 </script>
 
