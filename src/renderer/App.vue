@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <!-- <div class="nav-wrapper">
-      <work-nav></work-nav>
-    </div> -->
+    <!-- <window-bar></window-bar> -->
     <transition name="fade">
       <router-view></router-view>
     </transition>
@@ -10,14 +8,14 @@
 </template>
 
 <script>
-  import workNav from './components/WorkNav'
+import WindowBar from './components/WindowBar'
 
-  export default {
-    name: 'Hilog',
-    components: {
-      workNav
-    }
+export default {
+  name: 'Hilog',
+  components: {
+    WindowBar
   }
+}
 </script>
 
 <style lang="scss">
@@ -74,5 +72,4 @@ body {
     }
   }
 }
-
 </style>

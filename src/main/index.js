@@ -14,6 +14,7 @@ import db from '../renderer/dataStore'
 import path from 'path'
 
 let tray
+let forceQuit
 
 /**
  * Set `__static` path to static files in production
@@ -28,8 +29,6 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-let isTrueClose = false
-
 function createWindow () {
   /**
    * Initial window options
@@ -38,13 +37,15 @@ function createWindow () {
     height: 563,
     useContentSize: true,
     width: 1000,
-    resizable: false
+    resizable: false,
+    backgroundColor: '#403F4D',
+    center: true,
+    titleBarStyle: 'hidden'
   })
 
   mainWindow.loadURL(winURL)
-
   mainWindow.on('close', (e) => {
-    if (!isTrueClose) {
+    if (!forceQuit) {
       e.preventDefault()
       mainWindow.hide()
     }
@@ -52,6 +53,15 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+    if (tray) {
+      tray.destroy()
+      tray = null
+    }
+  })
+
+  app.on('before-quit', function (e) {
+    forceQuit = true
+    mainWindow.close()
   })
 }
 
@@ -64,13 +74,16 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-  if (tray) tray.destroy()
 })
 
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+  if (!tray) {
+    createTray()
+  }
+  mainWindow.show()
 })
 
 ipcMain.on('save-dialog', function (event) {
@@ -88,7 +101,8 @@ ipcMain.on('save-dialog', function (event) {
 })
 
 function createTray () {
-  const iconName = process.platform === 'win32' ? './win/ico.ico' : './mac/ico.icns'
+  // const iconName = process.platform === 'win32' ? './win/ico.ico' : './mac/ico.icns'
+  const iconName = './ico.png'
   const iconPath = path.join(__dirname, iconName)
   tray = new Tray(iconPath)
 
@@ -100,20 +114,19 @@ function createTray () {
   }, {
     label: '退出程序',
     click () {
-      isTrueClose = true
+      forceQuit = true
       mainWindow.close()
     }
   }])
 
   tray.on('click', () => {
-    mainWindow.isVisible() || mainWindow.show()
+    mainWindow.show()
   })
 
   tray.on('right-click', () => {
     tray.popUpContextMenu(contextMenu)
   })
-  tray.setToolTip('Electron Demo in the tray.')
-  // tray.setContextMenu(contextMenu)
+  tray.setToolTip('Open Hilog.')
 }
 /**
  * Auto Updater
