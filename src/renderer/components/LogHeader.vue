@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import moment from 'moment'
 import genWord from '../util/genWord'
 import { ipcRenderer, clipboard } from 'electron'
@@ -68,7 +69,6 @@ export default {
       month: '',
       year: '',
       weekday: '',
-      timeRange: '',
       pickerOptions: {
         firstDayOfWeek: 1
       },
@@ -78,20 +78,16 @@ export default {
       }
     }
   },
-  watch: {
-    '$store.state.timeRange' () {
-      if (this.$store.state.timeRange !== this.timeRange) {
-        this.timeRange = this.$store.state.timeRange
-      }
-    }
+  computed: {
+    ...mapState([
+      'timeRange'
+    ])
   },
   created () {
     this.day = moment().format('DD')
     this.month = moment().format('MMM')
     this.year = moment().format('YYYY')
     this.weekday = moment().format('dddd')
-
-    this.timeRange = moment().format('M')
 
     ipcRenderer.on('saved-word', async (event, path) => {
       if (!path) path = 'No path'
@@ -104,6 +100,12 @@ export default {
     })
   },
   methods: {
+    ...mapMutations([
+      'updateLogList'
+    ]),
+    setMonth (month) {
+      this.updateLogList({ month })
+    },
     handleCommand (command) {
       if (command) {
         this[command]()
@@ -132,9 +134,6 @@ export default {
     },
     genLastWeekWord () {
       this.genWeekWord(-1)
-    },
-    setMonth (month) {
-      this.$store.commit('updateLogList', { month })
     },
     genBiweeklyText () {
       const mArr = []
@@ -176,6 +175,8 @@ export default {
   justify-content: space-between;
   padding: 0 0 20px 0;
   font-size: $heading-font-size;
+  user-select: none;
+  cursor: default;
   .calendar {
     display: flex;
     align-items: center;
@@ -197,7 +198,7 @@ export default {
 
 .btn-menu {
   display: block;
-  width: 30px;
+  width: 26px;
   height: 30px;
   margin-left: 10px;
   background: no-repeat url(~@/assets/images/bar.svg);
