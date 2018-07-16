@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <title-bar></title-bar>
     <transition name="fade">
       <router-view></router-view>
     </transition>
@@ -7,8 +8,13 @@
 </template>
 
 <script>
+import TitleBar from './components/TitleBar'
+
 export default {
-  name: 'Hilog'
+  name: 'Hilog',
+  components: {
+    TitleBar
+  }
 }
 </script>
 
@@ -22,7 +28,10 @@ body {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font: caption;
   font-weight: lighter;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+#app {
+  overflow: hidden;
 }
 .nav-wrapper {
   position: fixed;

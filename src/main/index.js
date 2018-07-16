@@ -40,7 +40,8 @@ function createWindow () {
     resizable: false,
     backgroundColor: '#403F4D',
     center: true,
-    titleBarStyle: 'hidden'
+    titleBarStyle: 'hidden',
+    frame: process.platform !== 'win32'
   })
 
   mainWindow.loadURL(winURL)
@@ -128,6 +129,23 @@ function createTray () {
   })
   tray.setToolTip('Open Hilog.')
 }
+
+ipcMain.on('minimizeWindow', () => {
+  mainWindow.minimize()
+})
+
+ipcMain.on('maximizeWindow', () => {
+  mainWindow.maximize()
+})
+
+ipcMain.on('closeWindow', () => {
+  mainWindow.close()
+})
+
+ipcMain.on('restoreWindow', () => {
+  mainWindow.unmaximize()
+})
+
 /**
  * Auto Updater
  *
