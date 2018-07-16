@@ -41,7 +41,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: $container-padding;
   font-size: $item-font-size;
 }
 .info {
@@ -95,7 +94,7 @@ select {
   &-back {
     position: fixed;
     left: 20px;
-    top: 20px;
+    top: 40px;
   }
   &-login {
     display: block;

@@ -134,9 +134,7 @@ export default {
 
 .container {
   position: relative;
-  margin: 20px 50px;
-  padding-right: $container-padding;
-  padding-bottom: 30px;
+  padding: 0 90px 0 50px;
 }
 .input-container {
   display: grid;

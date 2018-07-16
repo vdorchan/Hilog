@@ -20,6 +20,11 @@ export default {
 
 <style lang="scss">
 @import './assets/scss/var';
+html,
+body,
+#app {
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
@@ -32,6 +37,8 @@ body {
 }
 #app {
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .nav-wrapper {
   position: fixed;
@@ -39,6 +46,10 @@ body {
   top: 0;
   width: 200px;
   height: 100%;
+}
+.container {
+  overflow: hidden;
+  overflow-y: auto;
 }
 .container a {
   text-decoration: none;
@@ -74,5 +85,16 @@ body {
       color: $green;
     }
   }
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #6f6f6f;
+}
+*::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 </style>

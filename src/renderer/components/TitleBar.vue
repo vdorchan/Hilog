@@ -47,8 +47,6 @@ export default {
   color: #eee;
   font-size: 12px;
   line-height: 22px;
-  position: fixed;
-  z-index: 100;
   background: $bg;
 
   &-buttons {
