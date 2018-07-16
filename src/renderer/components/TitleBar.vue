@@ -1,5 +1,5 @@
 <template>
-  <div class="title-bar">
+  <div :class="['title-bar', {'is-mac': os === 'darwin'}]">
     Hilog - {{ version }}
     <div class="title-bar-buttons" v-if="os !== 'darwin'">
       <a href="javascript:" class="minimize" @click="sendCommand('minimizeWindow')"></a>
@@ -40,14 +40,20 @@ export default {
 @import '../assets/scss/var';
 
 .title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   -webkit-app-region: drag;
-  height: 22px;
+  height: 30px;
   width: 100%;
-  text-align: center;
   color: #eee;
   font-size: 12px;
-  line-height: 22px;
   background: $bg;
+
+  &.is-mac {
+    height: 22px;
+  }
 
   &-buttons {
     position: absolute;
