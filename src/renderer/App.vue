@@ -33,7 +33,6 @@ body {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font: caption;
   font-weight: lighter;
-  overflow-y: auto;
 }
 #app {
   overflow: hidden;
