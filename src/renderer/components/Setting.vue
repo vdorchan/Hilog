@@ -6,15 +6,12 @@
     </div>
     <template v-if="!$route.meta.isLogin">
       <router-link class="btn-back" to="/index">&lt; 返回</router-link>
-      <div class="info">
-        <label for="">关于作者</label>
-        <p>vdorchan&lt;<a href="mailto:vdorchan@gmail.com">vdorchan@gmail.com</a>&gt;</p>
-      </div>
     </template>
   </div>
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -47,8 +44,10 @@ export default {
   position: fixed;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  line-height: 40px;
+  align-items: center;
+  line-height: 30px;
 
   label {
     margin-right: 10px;

@@ -12,6 +12,7 @@ import {
 import moment from 'moment'
 import db from '../renderer/dataStore'
 import path from 'path'
+import pkg from '../../package.json'
 
 let tray
 let forceQuit
@@ -144,6 +145,14 @@ ipcMain.on('closeWindow', () => {
 
 ipcMain.on('restoreWindow', () => {
   mainWindow.unmaximize()
+})
+
+ipcMain.on('showAbout', () => {
+  dialog.showMessageBox({
+    title: 'Hilog',
+    message: 'Hilog',
+    detail: `Version: ${pkg.version}\nAuthor: vdorchan <vdorchan@gmail.com>\nGithub: https://github.com/vdorchan/Hilog`
+  })
 })
 
 /**

@@ -44,6 +44,9 @@
           <el-dropdown-item command="genWeekWord" divided>导出周报（这一周）</el-dropdown-item>
           <el-dropdown-item command="genLastWeekWord">导出周报（上一周）</el-dropdown-item>
           <el-dropdown-item command="genBiweeklyText">导出双周汇报</el-dropdown-item>
+          <el-dropdown-item command="toGithubIssue" divided>软件有bug，怼作者</el-dropdown-item>
+          <el-dropdown-item command="toGithub">软件很skr，给作者加star</el-dropdown-item>
+          <el-dropdown-item command="showAbout" divided>关于</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <!-- <select name="" id="">
@@ -58,7 +61,7 @@
 import { mapState, mapMutations } from 'vuex'
 import moment from 'moment'
 import genWord from '../util/genWord'
-import { ipcRenderer, clipboard } from 'electron'
+import { ipcRenderer, clipboard, shell } from 'electron'
 
 export default {
   name: 'date',
@@ -161,6 +164,15 @@ export default {
           type: 'warning'
         })
       }
+    },
+    showAbout () {
+      ipcRenderer.send('showAbout')
+    },
+    toGithubIssue () {
+      shell.openExternal('https://github.com/vdorchan/Hilog/issues')
+    },
+    toGithub () {
+      shell.openExternal('https://github.com/vdorchan/Hilog')
     }
   }
 }
