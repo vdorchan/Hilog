@@ -3,10 +3,10 @@
     <log-header></log-header>
     <div class="input-container" style="-webkit-app-region: no-drag;">
       <div class="log-progress input-wrapper">
-        <input type="number" placeholder="进度" v-model.number.trim="log.itemProgress" @input="fixProgress" min=0 max=100 ref="itemProgress" @keyup.enter="addLog">
+        <input type="number" placeholder="进度" v-model.number.trim="log.itemProgress" @input="fixProgress" min=0 max=100 ref="itemProgress" @keypress.enter="addLog">
       </div>
       <div class="input-wrapper">
-        <input type="text" placeholder="项目名称" v-model.trim="log.itemName" @focus="popHoverSelect('itemName', 'showSiteSelect')" @input="popHoverSelect('itemName', 'showSiteSelect')" @blur="hideHoverSelect('showSiteSelect')" ref="itemName" @keyup.enter="addLog">
+        <input type="text" placeholder="项目名称" v-model.trim="log.itemName" @focus="popHoverSelect('itemName', 'showSiteSelect')" @input="popHoverSelect('itemName', 'showSiteSelect')" @blur="hideHoverSelect('showSiteSelect')" ref="itemName" @keypress.enter="addLog">
         <div class="hover-select site-select" v-show="showSiteSelect && filterSites.length">
           <ul>
             <li v-for="s of filterSites" :key="s" @click="hoverSelect(s, 'itemName', 'showSiteSelect')">{{ s }}</li>
@@ -14,10 +14,10 @@
         </div>
       </div>
       <div class="input-wrapper">
-        <input type="url" placeholder="项目链接" v-model.trim="log.itemLink" ref="itemLink" @keyup.enter="addLog">
+        <input type="url" placeholder="项目链接" v-model.trim="log.itemLink" ref="itemLink" @keypress.enter="addLog">
       </div>
       <div class="input-wrapper">
-        <input type="text" placeholder="备注" v-model.trim="log.itemRemark" @focus="popHoverSelect('itemRemark', 'showRemarkSelect')" @input="popHoverSelect('itemRemark', 'showRemarkSelect')" @blur="hideHoverSelect('showRemarkSelect')" ref="itemRemark" @keyup.enter="addLog">
+        <input type="text" placeholder="备注" v-model.trim="log.itemRemark" @focus="popHoverSelect('itemRemark', 'showRemarkSelect')" @input="popHoverSelect('itemRemark', 'showRemarkSelect')" @blur="hideHoverSelect('showRemarkSelect')" ref="itemRemark" @keypress.enter="addLog">
         <div class="hover-select" v-show="showRemarkSelect">
           <ul>
             <li v-for="s of remarks" :key="s" @click="hoverSelect(s, 'itemRemark', 'showRemarkSelect')">{{ s }}</li>
