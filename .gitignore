@@ -69,3 +69,7 @@ typings/
 _doc
 dist
 .vscode
+
+build/*
+!build/icons
+!build/installer.nsh
