@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <log-header></log-header>
-    <div class="input-container" style="-webkit-app-region: no-drag;">
+    <div class="input-container">
       <div class="log-progress input-wrapper">
         <input type="number" placeholder="进度" v-model.number.trim="log.itemProgress" @input="fixProgress" min=0 max=100 ref="itemProgress" @keypress.enter="addLog">
       </div>
@@ -135,6 +135,8 @@ export default {
 .container {
   position: relative;
   padding: 0 90px 0 50px;
+  min-height: 100%;
+  overflow-y: scroll;
 }
 .input-container {
   display: grid;
@@ -200,6 +202,7 @@ select {
     height: 40px;
     font-size: 14px;
     cursor: default;
+    user-select: none;
   }
 }
 input::-webkit-outer-spin-button,

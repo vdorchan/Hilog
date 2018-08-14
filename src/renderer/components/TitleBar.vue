@@ -45,6 +45,7 @@ export default {
   justify-content: center;
   flex-shrink: 0;
   -webkit-app-region: drag;
+  user-select: none;
   height: 30px;
   width: 100%;
   color: #eee;

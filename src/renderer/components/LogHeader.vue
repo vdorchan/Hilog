@@ -93,13 +93,14 @@ export default {
     this.weekday = moment().format('dddd')
 
     ipcRenderer.on('saved-word', async (event, path) => {
-      if (!path) path = 'No path'
-      const { logList, name } = this.genWordOptions
-      await genWord(logList, name, path)
-      this.$message({
-        message: '成功导出周报',
-        type: 'success'
-      })
+      if (path) {
+        const { logList, name } = this.genWordOptions
+        await genWord(logList, name, path)
+        this.$message({
+          message: '成功导出周报',
+          type: 'success'
+        })
+      }
     })
   },
   methods: {
