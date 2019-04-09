@@ -2,6 +2,10 @@
 
 > An electron-vue project
 
+![预览一](https://github.com/vdorchan/hilog/raw/master/images/1.png)
+
+![预览一](https://github.com/vdorchan/hilog/raw/master/images/2.png)
+
 #### Build Setup
 
 ``` bash
